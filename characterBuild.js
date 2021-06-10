@@ -92,10 +92,15 @@ function getClass(){
   return playerClass;
 }
 
+function statGains(obj, stat, amt){
+  return obj[stat] += amt;
+}
+
 charObject = {'name': '', 'race': '', 'class': '', 'hp': 10, 'atk': 10, 'str': 10, 'rng': 10, 'mgk': 10};
 
 let player = buildChar(charObject);
 player.name = getName();
 player.race = getRace();
 player.class = getClass();
-getStats(player);
+//charObject.rng = statGains(charObject, 'rng', 10);
+getStats(charObject);
