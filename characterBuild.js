@@ -1,7 +1,7 @@
 const input = require('readline-sync');
 
 function getStats(character){
-  console.log(`${character.name} has the following stats:\nhp: ${character.hp}\nattack: ${character.atk}\nstrength: ${character.str}\nrange: ${character.rng}\nmagic: ${character.mgk}`);
+  console.log(`${character.name} has the following stats:\nhp: ${character.hp}\nattack: ${character.atk}\nstrength: ${character.str}\nrange: ${character.rng}\nmagic: ${character.mgk}\nspeed: ${character.spd}`);
 }
 
 function buildChar(obj){
@@ -54,7 +54,7 @@ function getRace(){
   console.log(`There are ${raceOptions.length} races in Twisted Trees: ${raceOptionsCapitalized}.`)
 
   while (correctRace !== true){
-    race = input.question("Which race would you like to be (Elf, Human, Dwarf): ");
+    race = input.question(`Which race would you like to be ${raceOptionsCapitalized}: `);
     race = race.toLowerCase();
   
     for (i=0; i<raceOptions.length; i++){
@@ -96,11 +96,43 @@ function statGains(obj, stat, amt){
   return obj[stat] += amt;
 }
 
-charObject = {'name': '', 'race': '', 'class': '', 'hp': 10, 'atk': 10, 'str': 10, 'rng': 10, 'mgk': 10};
+function raceAndClassBonus(user){
+  if (user.class === 'warrior'){
+    statGains(user, 'atk', 10);
+    statGains(user, 'str', 10)
+  } else if (user.class === 'mage'){
+    statGains(user, 'mgk', 20);
+  } else if (user.class === 'ranger'){
+    statGains(user, 'rng', 20);
+  }
+
+  if (user.race === 'dwarf'){
+    statGains(user, 'atk', 5);
+    statGains(user, 'str', 15);
+    statGains(user, 'hp', 10);
+  } else if (user.race === 'elf'){
+    statGains(user, 'hp', 5);
+    statGains(user, 'rng', 10);
+    statGains(user, 'mgk', 10);
+    statGains(user, 'spd', 5)
+  } else if (user.race === 'human'){
+    statGains(user, 'hp', 10);
+    statGains(user, 'atk', 5);
+    statGains(user, 'str', 5);
+    statGains(user, 'rng', 5);
+    statGains(user, 'mgk', 5);
+  }
+}
+
+function secondClassBonus(player, secondClass){
+  return;
+}
+
+charObject = {'name': '', 'race': 'elf', 'class': 'ranger', 'hp': 10, 'atk': 10, 'str': 10, 'rng': 10, 'mgk': 10, 'spd': 10};
 
 let player = buildChar(charObject);
 player.name = getName();
 player.race = getRace();
 player.class = getClass();
-//charObject.rng = statGains(charObject, 'rng', 10);
-getStats(charObject);
+raceAndClassBonus(player);
+getStats(player);
